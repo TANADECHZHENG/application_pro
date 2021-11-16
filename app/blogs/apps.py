@@ -1,4 +1,4 @@
-from django.apps import AppConfig
+from djangobasic import AppConfig
 
 
 class BlogsConfig(AppConfig):
