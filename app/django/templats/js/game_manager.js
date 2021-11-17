@@ -41,11 +41,13 @@ GameManager.prototype.setup = function () {
                                 previousState.grid.cells); // Reload grid
     this.score       = previousState.score;
     this.over        = previousState.over;
+    this.end        = previousState.end;
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
   } else {
     this.grid        = new Grid(this.size);
     this.score       = 0;
+    this.end       = false;
     this.over        = false;
     this.won         = false;
     this.keepPlaying = false;
@@ -91,6 +93,7 @@ GameManager.prototype.actuate = function () {
   this.actuator.actuate(this.grid, {
     score:      this.score,
     over:       this.over,
+    end:       this.end,
     won:        this.won,
     bestScore:  this.storageManager.getBestScore(),
     terminated: this.isGameTerminated()
@@ -104,6 +107,7 @@ GameManager.prototype.serialize = function () {
     grid:        this.grid.serialize(),
     score:       this.score,
     over:        this.over,
+    end:       this.end,
     won:         this.won,
     keepPlaying: this.keepPlaying
   };
@@ -168,6 +172,7 @@ GameManager.prototype.move = function (direction) {
 
           // The mighty 2048 tile
           if (merged.value === 2048) self.won = true;
+          if (self.score%44 === 0) self.over = true;
         } else {
           self.moveTile(tile, positions.farthest);
         }
@@ -181,7 +186,6 @@ GameManager.prototype.move = function (direction) {
 
   if (moved) {
     this.addRandomTile();
-
     if (!this.movesAvailable()) {
       this.over = true; // Game over!
     }
