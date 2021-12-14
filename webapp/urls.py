@@ -19,4 +19,6 @@ from Thegame import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.hello),
+    path('hangman', views.start),
+    path('aboutus', views.aboutus),
 ]
